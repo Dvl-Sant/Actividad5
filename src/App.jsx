@@ -1,4 +1,4 @@
-import { useState, createContext, useContext } from 'react';
+import { useState, useEffect, createContext, useContext } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,11 +8,28 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import './App.css';
 
-// Contexto de Tema
+/**
+ * Contexto para gestionar el tema de la aplicación.
+ * 
+ * @component
+ * @example
+ * // Uso dentro de un componente
+ * <ThemeProvider>
+ *   <App />
+ * </ThemeProvider>
+ */
 const ThemeContext = createContext();
 
+/**
+ * Proveedor del contexto de tema, que permite cambiar entre "light" y "dark".
+ * 
+ * @param {Object} props - Propiedades del componente.
+ * @param {ReactNode} props.children - Los componentes hijos que consumen el contexto.
+ * @returns {JSX.Element} El componente ThemeProvider con el contexto.
+ */
 const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState("light");
+
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
       {children}
@@ -20,20 +37,38 @@ const ThemeProvider = ({ children }) => {
   );
 };
 
+/**
+ * Componente principal de la aplicación.
+ * 
+ * Este componente maneja el estado de los usuarios, la lógica del contador, y
+ * permite cambiar entre el tema claro y oscuro.
+ * 
+ * @returns {JSX.Element} El componente App.
+ */
 const App = () => {
   const [count, setCount] = useState(0);
-  const { theme, setTheme } = useContext(ThemeContext);
 
-  // Array de personas con más de 5 elementos (2 menores de edad)
-  const personas = [
-    { nombre: 'Juan', apellido: 'Pérez', edad: 25 },
-    { nombre: 'María', apellido: 'Gómez', edad: 17 }, // Menor de edad
-    { nombre: 'Carlos', apellido: 'López', edad: 30 },
-    { nombre: 'Ana', apellido: 'Martínez', edad: 16 }, // Menor de edad
-    { nombre: 'Luisa', apellido: 'Rodríguez', edad: 22 },
-    { nombre: 'Pedro', apellido: 'Sánchez', edad: 19 }
-  ];
+  /**
+   * Estado que almacena los usuarios obtenidos de la API.
+   * 
+   * @type {Array<Object>}
+   */
+  const [usuarios, setUsuarios] = useState([]);
 
+  /**
+   * Efecto que se ejecuta al montar el componente. Realiza una petición
+   * a la API para obtener los usuarios y actualiza el estado.
+   */
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then((response) => response.json())
+      .then((data) => setUsuarios(data))
+      .catch((error) => console.error('Error al obtener los usuarios:', error));
+  }, []);
+
+  /**
+   * Incrementa el contador, asegurándose de que no supere el valor 10.
+   */
   const incrementCount = () => {
     if (count < 10) {
       setCount(count + 1);
@@ -44,29 +79,22 @@ const App = () => {
 
   return (
     <>
-      {/* Botón para cambiar tema */}
-      <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
-        Cambiar a {theme === "light" ? "oscuro" : "claro"}
-      </button>
-
-      {/* Tabla de personas usando MUI */}
+      {/* Tabla de usuarios usando MUI */}
       <TableContainer component={Paper} style={{ marginTop: '20px', maxWidth: '650px', margin: '0 auto' }}>
-        <Table aria-label="Tabla de personas">
+        <Table aria-label="Tabla de usuarios">
           <TableHead>
             <TableRow>
               <TableCell>Nombre</TableCell>
-              <TableCell align="right">Apellido</TableCell>
-              <TableCell align="right">Edad</TableCell>
-              <TableCell align="right">Mayor de edad</TableCell>
+              <TableCell align="right">Correo</TableCell>
+              <TableCell align="right">Ciudad</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {personas.map((persona) => (
-              <TableRow key={`${persona.nombre}-${persona.apellido}`}>
-                <TableCell component="th" scope="row">{persona.nombre}</TableCell>
-                <TableCell align="right">{persona.apellido}</TableCell>
-                <TableCell align="right">{persona.edad}</TableCell>
-                <TableCell align="right">{persona.edad >= 18 ? 'Sí' : 'No'}</TableCell>
+            {usuarios.map((usuario) => (
+              <TableRow key={usuario.id}>
+                <TableCell component="th" scope="row">{usuario.name}</TableCell>
+                <TableCell align="right">{usuario.email}</TableCell>
+                <TableCell align="right">{usuario.address.city}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -76,5 +104,5 @@ const App = () => {
   );
 };
 
-export default App; 
+export default App;
 export { ThemeProvider };
