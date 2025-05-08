@@ -6,8 +6,8 @@ const containerStyle = {
   height: '500px'
 };
 
-const origen = { lat: 19.4326, lng: -99.1332 };    // Ciudad de México
-const destino = { lat: 19.5670, lng: -99.0437 };   // Ecatepec
+const origen = { lat: 23.2314, lng: -106.4265 };    // FIMAZ     23.231434969223766, -106.42658708302817
+const destino = { lat: 23.1984, lng: -106.4230 };   // Machado   23.198416022864045, -106.4230164397049
 
 const Ruta = () => {
   const { isLoaded, loadError } = useJsApiLoader({
