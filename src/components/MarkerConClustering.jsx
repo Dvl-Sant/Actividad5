@@ -43,7 +43,7 @@ const MapaConClustering = () => {
                     }}
             >
                 <Typography variant="h4" align="center" gutterBottom>
-                    Ruta desde la Facultad a otro punto
+                   Mapa Utilizando Clusters
                 </Typography>
                 <GoogleMap
                     mapContainerStyle={conteinerStyle}

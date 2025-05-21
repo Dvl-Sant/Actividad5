@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 
 const containerStyle = {
-  width: "100%",
+  width: "90%",
   height: "600px",
 };
 
