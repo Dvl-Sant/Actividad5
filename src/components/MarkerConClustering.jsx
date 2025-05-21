@@ -65,3 +65,12 @@ const MapaConClustering = () => {
 
 export default MapaConClustering;
 
+
+
+<MarkerClustererF>
+    {(clusterer) =>
+        markers.map((marker, index) => (
+            <MarkerF key={index} position={marker} clusterer={clusterer} />
+        ))
+    }
+</MarkerClustererF>

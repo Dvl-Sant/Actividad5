@@ -1,15 +1,14 @@
-// src/components/Mapa.jsx
 import { GoogleMap, LoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 import { useState } from "react";
 
 const containerStyle = {
   width: '100%',
-  height: '500px'
+  height: '500px',
 };
 
 const center = {
   lat: 23.2186908,  // Mazatlán
-  lng: -106.4137016
+  lng: -106.4137016,
 };
 
 export default function Mapa() {
